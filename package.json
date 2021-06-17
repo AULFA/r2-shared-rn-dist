@@ -1,0 +1,160 @@
+{
+  "name": "r2-shared-rn",
+  "version": "1.0.51",
+  "description": "Readium 2 'shared' for NodeJS (TypeScript)",
+  "keywords": [
+    "readium",
+    "readium2",
+    "shared",
+    "EPUB",
+    "TypeScript",
+    "JavaScript",
+    "ES5",
+    "ES6",
+    "ECMAScript 2015",
+    "ECMAScript 6",
+    "ES7",
+    "ECMAScript 2016",
+    "ECMAScript 7",
+    "ES8",
+    "ECMAScript 2017",
+    "ECMAScript 8"
+  ],
+  "engines": {
+    "node": ">=6",
+    "npm": ">=3",
+    "yarn": ">=1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AULFA/r2-shared-rn.git"
+  },
+  "author": {
+    "name": "Readium Foundation",
+    "organization": "Readium Foundation",
+    "url": "http://github.com/readium/"
+  },
+  "license": "BSD-3-Clause",
+  "licenses": [
+    {
+      "type": "BSD-3-Clause",
+      "url": "http://opensource.org/licenses/BSD-3-Clause"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/AULFA/r2-shared-rn/issues"
+  },
+  "homepage": "https://github.com/AULFA/r2-shared-rn",
+  "dependencies": {
+    "debug": "^4.3.1",
+    "fast-deep-equal": "^3.1.3",
+    "image-size": "^1.0.0",
+    "mime-types": "^2.1.30",
+    "moment": "^2.29.1",
+    "r2-lcp-rn": "AULFA/r2-lcp-rn-dist#develop",
+    "r2-utils-rn": "AULFA/r2-utils-rn-dist#develop",
+    "react-native-fs": "^2.17.0",
+    "slugify": "^1.5.3",
+    "ta-json-x": "^2.5.3",
+    "tslib": "^2.2.0",
+    "xmldom": "^0.6.0",
+    "xpath": "^0.0.32",
+    "yazl": "^2.5.1"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/image-size": "^0.8.0",
+    "@types/mime-types": "^2.1.0",
+    "@types/node": "^12.20.12",
+    "@types/xmldom": "^0.1.30",
+    "@types/yazl": "^2.4.2",
+    "ava": "^2.4.0",
+    "cpy-cli": "^3.1.1",
+    "cross-env": "^7.0.3",
+    "cson": "^7.20.0",
+    "eclint": "^2.8.1",
+    "filehound": "^1.17.4",
+    "git-rev-sync": "^3.0.1",
+    "json": "^11.0.0",
+    "json-diff": "^0.5.4",
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
+    "tslint": "^5.20.1",
+    "tslint-language-service": "^0.9.9",
+    "typescript": "^4.2.4"
+  },
+  "main": "dist/es6-es2015/src/index.js",
+  "types": "dist/es6-es2015/src/index.d.js",
+  "bin": {
+    "r2-shared-rn-cli": "dist/es6-es2015/src/_utils/cli.js"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "docs/**/*",
+    "dist/**/*"
+  ],
+  "scripts": {
+    "cson2json": "sed -E \"s/#ECMASCRIPT#/es5/g\" package-scripts-build.cson > tmp-build.cson && sed -E \"s/#ECMASCRIPT#/es6-es2015/g\" package-scripts-build.cson >> tmp-build.cson && sed -E \"s/#ECMASCRIPT#/es7-es2016/g\" package-scripts-build.cson >> tmp-build.cson && sed -E \"s/#ECMASCRIPT#/es8-es2017/g\" package-scripts-build.cson >> tmp-build.cson && json -I -f package.json -e \"this.scripts=$(cat package-scripts.cson tmp-build.cson | node node_modules/.bin/cson2json)\" && rimraf tmp-*.cson",
+    "copydist": "cpy \"./dist/**/*\" ../r2-opds-js/node_modules/r2-shared-rn/ --cwd=./ --parents --no-dir && cpy \"./dist/**/*\" ../r2-streamer-js/node_modules/r2-shared-rn/ --cwd=./ --parents --no-dir && cpy \"./dist/**/*\" ../r2-navigator-js/node_modules/r2-shared-rn/ --cwd=./ --parents --no-dir && cpy \"./dist/**/*\" ../r2-testapp-js/node_modules/r2-shared-rn/ --cwd=./ --parents --no-dir && cpy \"./dist/**/*\" ../readium-desktop/node_modules/r2-shared-rn/ --cwd=./ --parents --no-dir",
+    "quick-build-dist": "npm run transpile:typescript:es8-es2017+afterdist && npm run copydist",
+    "_pregitdist": "npm run build:all",
+    "gitdist": "cd ../r2-shared-rn-dist/ && git checkout -B develop && (git pull || echo \"pull\") && (git --no-pager status || echo status) && ((rimraf \"*\" && echo rimrafOK) || echo rimrafNOK) && cpy ../r2-shared-rn/package.json . && cpy ../r2-shared-rn/package-lock.json . && cpy ../r2-shared-rn/LICENSE . && cpy ../r2-shared-rn/README.md . && cpy \"./docs/**/*\" ../r2-shared-rn-dist/ --cwd=../r2-shared-rn/ --parents --no-dir && cpy \"./dist/**/*\" ../r2-shared-rn-dist/ --cwd=../r2-shared-rn/ --parents --no-dir && (git add * || echo add) && (git commit -a -m \"add new dist\" || echo commit) && (git push --set-upstream origin develop || echo push) && (git --no-pager status || echo status) && cd ../r2-shared-rn",
+    "start": "cross-env DEBUG=r2:* node \"./dist/es6-es2015/src/_utils/cli.js\" ./misc/epubs/",
+    "prepare_": "npm run build:all && npm test",
+    "prepublish_": "npm run prepare_",
+    "typescript:imports": "node tools/typescript_relativize_path_mapping_imports.js",
+    "gitrev": "node tools/gitrev.js && cat dist/gitrev.json",
+    "afterdist": "npm run typescript:imports && npm run gitrev",
+    "prebuild": "npm run lint",
+    "build": "npm run transpile:typescript",
+    "postbuild": "npm run afterdist",
+    "prebuild:all": "npm run lint",
+    "build:all": "npm run transpile:typescript:all",
+    "postbuild:all": "npm run afterdist",
+    "clean": "rimraf ./dist && mkdirp ./dist",
+    "lint": "npm run lint:all && npm run lint:typescript:full",
+    "lint:all": "eclint check \"**/*\" \"!**/*.node\" \"!.git/**/*\" \"!node_modules*/**/*\" \"!dist/**/*\" \"!ava-ts/**/*\" \"!misc/**/*\" \"!now/**/*\" \"!.vscode/**/*\" \"!.history/**/*\" \"!**/.DS_Store\" \"!**/*.epub\" \"!**/*.cbz\" \"!**/*.jpg\" \"!**/*.jpeg\" \"!**/*.png\" \"!**/*.log\"",
+    "lint:typescript": "tslint -c \"./tslint.json\" \"./src/**/*.ts\" \"./test/**/*.ts\"",
+    "lint:typescript:full": "tslint --project \"./tsconfig.json\" -c \"./tslint.json\" \"./src/**/*.ts\" \"./test/**/*.ts\"",
+    "lintfix": "sed -i \"\" \"s/let normalizedPath = path\\\\.normalize(documentPath);/let normalizedPath = path.normalize(documentPath).toLowerCase();/g\" ./node_modules/tslint-language-service/out/src/index.js",
+    "pretranspile:typescript": "npm run clean",
+    "transpile:typescript": "tsc --pretty -p \"./tsconfig.json\"",
+    "pretranspile:typescript:all": "npm run clean",
+    "transpile:typescript:all": "npm run transpile:typescript:es5 && npm run transpile:typescript:es6-es2015 && npm run transpile:typescript:es7-es2016 && npm run transpile:typescript:es8-es2017",
+    "transpile:typescript:es8-es2017+afterdist": "npm run transpile:typescript:es8-es2017 && npm run afterdist",
+    "transpile:typescript:single": "node tools/typescript_compile_single.js",
+    "posttranspile:typescript:single": "npm run afterdist",
+    "avaResetCache": "ava --reset-cache",
+    "test": "cross-env DEBUG=r2:* ava",
+    "testTS": "cross-env DEBUG=r2:* TYPESCRIPT=1 ava",
+    "cli": "node \"./dist/es8-es2017/src/_utils/cli.js\"",
+    "cli-debug": "cross-env DEBUG=r2:* npm run cli",
+    "cli-debug-x": "cross-env DEBUG=* npm run cli",
+    "prebuild:es5": "npm run lint && npm run clean",
+    "build:es5": "npm run transpile:typescript:es5",
+    "postbuild:es5": "npm run afterdist",
+    "transpile:typescript:es5": "tsc --pretty -p \"./tsconfigs/tsconfig-es5-all.json\"",
+    "prebuild:es6-es2015": "npm run lint && npm run clean",
+    "build:es6-es2015": "npm run transpile:typescript:es6-es2015",
+    "postbuild:es6-es2015": "npm run afterdist",
+    "transpile:typescript:es6-es2015": "tsc --pretty -p \"./tsconfigs/tsconfig-es6-es2015-all.json\"",
+    "prebuild:es7-es2016": "npm run lint && npm run clean",
+    "build:es7-es2016": "npm run transpile:typescript:es7-es2016",
+    "postbuild:es7-es2016": "npm run afterdist",
+    "transpile:typescript:es7-es2016": "tsc --pretty -p \"./tsconfigs/tsconfig-es7-es2016-all.json\"",
+    "prebuild:es8-es2017": "npm run lint && npm run clean",
+    "build:es8-es2017": "npm run transpile:typescript:es8-es2017",
+    "postbuild:es8-es2017": "npm run afterdist",
+    "transpile:typescript:es8-es2017": "tsc --pretty -p \"./tsconfigs/tsconfig-es8-es2017-all.json\""
+  },
+  "importSort": {
+    ".ts": {
+      "parser": "typescript",
+      "style": "module"
+    }
+  }
+}

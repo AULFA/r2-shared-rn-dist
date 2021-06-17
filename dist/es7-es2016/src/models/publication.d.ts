@@ -1,0 +1,34 @@
+import { LCP } from "r2-lcp-rn/dist/es7-es2016/src/parser/epub/lcp";
+import { IInternal } from "./internal";
+import { Metadata } from "./metadata";
+import { Link } from "./publication-link";
+export declare class Publication {
+    Context: string[];
+    Metadata: Metadata;
+    Links: Link[];
+    Spine2: Link[];
+    Spine1: Link[] | undefined;
+    get Spine(): Link[] | undefined;
+    set Spine(spine: Link[] | undefined);
+    Resources: Link[];
+    TOC: Link[];
+    PageList2: Link[];
+    PageList1: Link[] | undefined;
+    get PageList(): Link[] | undefined;
+    set PageList(pagelist: Link[] | undefined);
+    Landmarks: Link[];
+    LOI: Link[];
+    LOA: Link[];
+    LOV: Link[];
+    LOT: Link[];
+    LCP: LCP | undefined;
+    freeDestroy(): void;
+    findFromInternal(key: string): IInternal | undefined;
+    AddToInternal(key: string, value: any): void;
+    GetCover(): Link | undefined;
+    GetNavDoc(): Link | undefined;
+    searchLinkByRel(rel: string): Link | undefined;
+    AddLink(typeLink: string, rel: string[], url: string, templated: boolean | undefined): void;
+    protected _OnDeserialized(): void;
+    private Internal;
+}
